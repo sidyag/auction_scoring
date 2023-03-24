@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 from pprint import pprint
 
-player_template = {"pid":"0","name":"","team_name":"","out_by":"None","runs_scored":"-1","balls_faced":"0","fours":"0","sixes":"0","strike_rate":"0","overs":"0","maiden":"0","runs_given":"0","wickets":"0","no_balls":"0","wide_balls":"0","CROST":"0","extras":"0"}
+player_template = {"pid":"0","name":"","team_name":"","out_by":"None","runs_scored":"0","balls_faced":"0","fours":"0","sixes":"0","strike_rate":"0","overs":"0","maiden":"0","runs_given":"0","wickets":"0","no_balls":"0","wide_balls":"0","CROST":"0","extras":"0"}
 
 def get_match(url):
   with open("matches.json","r") as f:
@@ -36,7 +36,7 @@ def get_match(url):
   Inning1_batting = Inning1.find_all('div',class_="cb-col cb-col-100 cb-ltst-wgt-hdr")[0]
   Inning1_bowling = Inning1.find_all('div',class_="cb-col cb-col-100 cb-ltst-wgt-hdr")[1]
   Inning1_batting = Inning1_batting.find_all('div',class_="cb-col cb-col-100 cb-scrd-itms")
-  Inning1_bowling = Inning1_bowling.find_all('div',class_="cb-col cb-col-100 cb-scrd-itms ")
+  Inning1_bowling = Inning1_bowling.find_all('div',class_="cb-col cb-col-100 cb-scrd-itms")
   Score = Inning1.find_all('span',class_="pull-right")
   score = Score[0].get_text()
   if '-' in score:
@@ -107,7 +107,6 @@ def get_match(url):
     # print bowler
     if len(bowler) > 0:
       Inning1_bowling_info.append(bowler)
-
 
 
   # Inning 2 Start
@@ -212,16 +211,14 @@ def get_match(url):
   # print players
   for p in Inning1_batting_info:
     if p['pid'] in players:
-      if('balls' not in p):
-        continue
       players[p['pid']]['name'] = p['name']
-      players[p['pid']]['balls_faced'] = p.get('balls',0)
-      players[p['pid']]['fours'] = p.get('fours',0)
-      players[p['pid']]['sixes'] = p.get('sixes',0)
-      players[p['pid']]['runs_scored'] = p.get('runs',0)
-      players[p['pid']]['out_by'] = p.get('out_by',0)
-      players[p['pid']]['strike_rate'] = p.get('sr',0)
-      players[p['pid']]['pid'] = p.get('pid',0)
+      players[p['pid']]['balls_faced'] = p.get('balls','0')
+      players[p['pid']]['fours'] = p.get('fours','0')
+      players[p['pid']]['sixes'] = p.get('sixes','0')
+      players[p['pid']]['runs_scored'] = p.get('runs','0')
+      players[p['pid']]['out_by'] = p.get('out_by','0')
+      players[p['pid']]['strike_rate'] = p.get('sr','0')
+      players[p['pid']]['pid'] = p.get('pid','0')
 
 
   for p in Inning1_bowling_info:
@@ -238,17 +235,14 @@ def get_match(url):
 
   for p in Inning2_batting_info:
     if p['pid'] in players:
-      if('balls' not in p):
-        continue
       players[p['pid']]['name'] = p['name']
-      players[p['pid']]['balls_faced'] = p.get('balls',0)
-      players[p['pid']]['fours'] = p.get('fours',0)
-      players[p['pid']]['sixes'] = p.get('sixes',0)
-      players[p['pid']]['runs_scored'] = p.get('runs',0)
-      players[p['pid']]['out_by'] = p.get('out_by',0)
-      players[p['pid']]['strike_rate'] = p.get('sr',0)
-      players[p['pid']]['pid'] = p.get('pid',0)
-
+      players[p['pid']]['balls_faced'] = p.get('balls','0')
+      players[p['pid']]['fours'] = p.get('fours','0')
+      players[p['pid']]['sixes'] = p.get('sixes','0')
+      players[p['pid']]['runs_scored'] = p.get('runs','0')
+      players[p['pid']]['out_by'] = p.get('out_by','0')
+      players[p['pid']]['strike_rate'] = p.get('sr','0')
+      players[p['pid']]['pid'] = p.get('pid','0')
 
   for p in Inning2_bowling_info:
     if p['pid'] in players:
@@ -262,6 +256,8 @@ def get_match(url):
       players[p['pid']]['pid'] = p['pid']
 
   match['players'] = players
+  #Remove this to cache existing games
+  matches["match"]=[]
   matches["match"].append(match)
 
 
@@ -272,5 +268,5 @@ def get_match(url):
 
 
 
-url = "https://www.cricbuzz.com/live-cricket-scorecard/50165/wa-vs-vic-final-sheffield-shield-2022-23"
+url = "https://www.cricbuzz.com/live-cricket-scorecard/31678/hbh-vs-ads-8th-match-big-bash-league-2020-21"
 get_match(url)
